@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Выбор времени</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <div id="time-screen" class="screen active">
+    <!-- Декоративные планеты -->
+    <div class="planet planet-saturn">🪐</div>
+    <div class="planet planet-small">🔮</div>
+
+    <div class="time-container">
+      <h1 class="time-title">Вибери зручний час для того щоб я тобі привіз головний подарунок</h1>
+
+      <!-- Контейнер с двумя барабанами: часы и минуты -->
+      <div class="time-picker-wrapper">
+        <div class="time-picker-highlight"></div>
+        
+        <!-- Колонка ЧАСОВ (00 - 23) -->
+        <div class="time-picker-column">
+          <div class="time-picker-list" id="hours-list"></div>
+        </div>
+
+        <div class="time-separator">:</div>
+
+        <!-- Колонка МИНУТ (00 - 59) -->
+        <div class="time-picker-column">
+          <div class="time-picker-list" id="minutes-list"></div>
+        </div>
+      </div>
+
+      <!-- Кнопка "Готово" -->
+      <button id="submit-time-btn" class="time-submit-btn">Готово</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

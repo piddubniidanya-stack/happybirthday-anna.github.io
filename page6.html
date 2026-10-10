@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Оцени подарок</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <div id="review-screen" class="screen active">
+    <div class="review-container">
+      
+      <!-- Заголовок -->
+      <h1 class="review-title fade-in-1">Оціни цей невеликий подарунок</h1>
+
+      <!-- Звёзды оценки -->
+      <div class="stars-rating fade-in-2" id="stars-container">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+
+      <!-- Поле для отзыва (необязательное) -->
+      <div class="feedback-wrapper fade-in-3">
+        <textarea id="feedback-text" placeholder="напиши якщо щось не сподобалось"></textarea>
+      </div>
+
+      <!-- Кнопка "Отправить" -->
+      <button id="send-review-btn" class="review-btn fade-in-4">Відправити</button>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

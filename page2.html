@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Письмо с поздравлением</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+    <!-- СТРАНИЦА С АНИМИРОВАННЫМ КОНВЕРТОМ -->
+    <div id="letter-screen" class="screen active">
+
+        <!-- Подсказка сверху -->
+        <div class="tap-hint" id="tap-hint">Натисни на конверт, щоб відкрити ✨</div>
+
+        <!-- Обёртка конверта -->
+        <div class="envelope-wrapper" id="envelope">
+
+            <!-- Задняя стенка конверта -->
+            <div class="envelope-back"></div>
+
+            <!-- Карточка с текстом письма внутри -->
+            <div class="letter-card" id="letter-card">
+                <div class="letter-badge">💌 Тобі лист</div>
+                <h1 class="letter-title">З Днем Народження! ✨</h1>
+
+                <div class="letter-body">
+                    <p>Сама прекрасна Анюта!</p>
+                    <p>В цей особливий день я хочу тобі сказати: дякую, що ти з’явилася в моєму житті. Ти — сама добра і
+                        прекрасна людина, яку я зустрічав, тому що тільки з тобою можна побалакати абсолютно на будь-які
+                        теми. Ти завжди вислухаєш і підтримаєш, за що я тобі вдячний зараз і буду вдячний до кінця
+                        життя.
+
+                        Саме ти мене навчила відкриватися і розказувати про всі свої проблеми, ділитися тим, як у мене
+                        проходить день. Адже тобі не все одно, що я тобі розказую. Ти завжди все слухаєш, і я це дуже
+                        ціную.
+
+                        ДЯКУЮ ТОБІ ЗА ТЕ, ЩО ТИ Є!!!! ❤️
+                    </p>
+                    <p>Нехай кожен твій день буде сповнений радістю, натхненням та посмішками. Залишайся завжди такою
+                        ж класною! 💖</p>
+                        <p>Але це ще не все в мене є для тебе ще подарунок перед тобою дві кнопки вибір за тобою</p>
+                </div>
+
+                <!-- Кнопки -->
+                <div class="action-buttons">
+                    <button id="yes-btn" class="btn btn-primary">Давай далі</button>
+                    <button id="no-btn" class="btn btn-secondary">Ні нічого не треба</button>
+                </div>
+            </div>
+
+            <!-- Передняя часть и клапан конверта -->
+            <div class="envelope-front"></div>
+            <div class="envelope-flap"></div>
+
+            <!-- Сугуч/сердечко застёжка -->
+            <div class="heart-seal">💌</div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

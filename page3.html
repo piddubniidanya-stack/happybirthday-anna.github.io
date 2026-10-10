@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Музыкальный тест</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <div id="quiz-screen" class="screen active">
+    
+    <!-- Всплывающая плашка с ошибкой -->
+    <div id="toast-message" class="toast-message">
+      ✨ Подумай ще
+    </div>
+
+    <div class="quiz-container">
+      
+      <!-- Заголовки -->
+      <div class="quiz-header">
+        <h1 class="quiz-title">Давай перевірю, наскільки добре я знаю твій музичний смак </h1>
+        <p class="quiz-subtitle">Який твій улюблений артист?</p>
+      </div>
+
+      <!-- Варианты ответов -->
+      <div class="quiz-options">
+        
+        <!-- Неправильный 1 -->
+        <button class="option-card" data-correct="false">
+          <div class="option-icon">🎧</div>
+          <div class="option-info">
+            <span class="option-title">T-Fest</span>
+            <span class="option-desc">мелодія, стиль і атмосфера</span>
+          </div>
+        </button>
+
+        <!-- Правильный ответ -->
+        <button class="option-card" data-correct="true">
+          <div class="option-icon">🎵</div>
+          <div class="option-info">
+            <span class="option-title">Nikow</span>
+            <span class="option-desc">ритм, енергія та драйв</span>
+          </div>
+        </button>
+
+        <!-- Неправильный 2 -->
+        <button class="option-card" data-correct="false">
+          <div class="option-icon">🎤</div>
+          <div class="option-info">
+            <span class="option-title">OG Buda</span>
+            <span class="option-desc">вайб, харизма й емоції</span>
+          </div>
+        </button>
+
+        <!-- Неправильный 3 -->
+        <button class="option-card" data-correct="false">
+          <div class="option-icon">🎸</div>
+          <div class="option-info">
+            <span class="option-title">Madk1d</span>
+            <span class="option-desc">темп, настрій і свобода</span>
+          </div>
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

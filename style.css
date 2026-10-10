@@ -1,0 +1,1130 @@
+/* ================= ОБЩИЕ СТИЛИ И СБРОС ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #12091f;
+  color: #ffffff;
+}
+
+/* Общий экран-контейнер */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  padding: 20px;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Анимация тряски (общая) */
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+
+/* ================= 1. ЭКРАН С ПИН-КОДОМ (index.html) ================= */
+
+#lock-screen {
+  background: linear-gradient(180deg, #180b26 0%, #2a1147 100%);
+}
+
+.lock-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Красивый заголовок */
+.welcome-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.welcome-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e0aaff;
+  margin-bottom: 10px;
+}
+
+.welcome-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #ffffff, #e0aaff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Индикаторы ввода (точки) */
+.pin-dots {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+.dot.filled {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.dot.error {
+  background-color: #ff4757;
+  border-color: #ff4757;
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
+}
+
+/* Клавиатура */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  width: 100%;
+}
+
+.key-btn {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.15s ease, transform 0.1s ease;
+  user-select: none;
+}
+
+.key-btn:active {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.95);
+}
+
+.key-btn.empty {
+  background: transparent;
+  cursor: default;
+}
+
+
+/* ================= 2. ЭКРАН С КОНВЕРТОМ И ПИСЬМОМ (page2.html) ================= */
+
+#letter-screen {
+  background: linear-gradient(180deg, #180b26 0%, #2a1147 100%);
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tap-hint {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  animation: pulseHint 2s infinite ease-in-out;
+  transition: opacity 0.4s ease;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.6; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+}
+
+.envelope-wrapper {
+  position: relative;
+  width: 300px;
+  height: 190px;
+  background: #2b1b42;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+}
+
+.envelope-wrapper:not(.open) {
+  animation: floatEnvelope 3s infinite ease-in-out;
+}
+
+@keyframes floatEnvelope {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.envelope-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #231338;
+  border-radius: 12px;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 150px solid transparent;
+  border-right: 150px solid transparent;
+  border-top: 105px solid #3c245c;
+  transform-origin: top;
+  transition: transform 0.5s ease 0.1s, z-index 0.2s ease 0.3s;
+  z-index: 4;
+}
+
+.envelope-front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 150px solid #321d4d;
+  border-right: 150px solid #321d4d;
+  border-bottom: 95px solid #3a225a;
+  border-radius: 0 0 12px 12px;
+  z-index: 3;
+}
+
+.heart-seal {
+  position: absolute;
+  top: 85px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+}
+
+.letter-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  width: 290px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.letter-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.letter-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #fff, #e0aaff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.letter-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: #8a2be2;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-secondary:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Исчезновение кнопки "Нет ничего не нада" */
+.btn.hide-btn {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  flex: 0;
+  pointer-events: none;
+}
+
+/* Открытое состояние конверта */
+.envelope-wrapper.open {
+  background: transparent;
+  box-shadow: none;
+  height: auto;
+  width: 100%;
+  max-width: 300px;
+}
+
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-wrapper.open .heart-seal {
+  opacity: 0;
+}
+
+.envelope-wrapper.open .letter-card {
+  position: relative;
+  left: 0;
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.envelope-wrapper.open .envelope-front,
+.envelope-wrapper.open .envelope-back {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+
+/* ================= 3. СТРАНИЦА С ТЕСТОМ (page3.html) ================= */
+
+#quiz-screen {
+  background: linear-gradient(180deg, #180b26 0%, #2a1147 100%);
+  flex-direction: column;
+  justify-content: center; /* Центрирование по вертикали */
+  align-items: center;     /* Центрирование по горизонтали */
+  padding-top: 0;
+  overflow-y: auto;
+}
+
+.quiz-container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.quiz-title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #ffffff, #e0aaff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.quiz-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.option-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.option-card:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.option-icon {
+  font-size: 24px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.option-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.option-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Всплывающее уведомление "Подумай еще" */
+.toast-message {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-60px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  z-index: 100;
+}
+
+.toast-message.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ================= 4. СТРАНИЦА-ПРЕДИСЛОВИЕ (page4.html) ================= */
+
+#gift-intro-screen {
+  background: linear-gradient(180deg, #180b26 0%, #2a1147 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gift-container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+.gift-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 28px 20px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  width: 100%;
+}
+
+/* Элементы с анимацией появления по очереди */
+.gift-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e0aaff;
+  margin-bottom: 14px;
+  
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.2s;
+}
+
+.gift-title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #ffffff, #e0aaff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.4s;
+}
+
+.gift-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 24px;
+
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.6s;
+}
+
+.gift-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards 0.8s;
+}
+
+/* Ключевые кадры для плавной анимации снизу вверх */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= 5. СТРАНИЦА ВЫБОРА ВРЕМЕНИ (page5.html) ================= */
+
+#time-screen {
+  background: linear-gradient(180deg, #1d0c36 0%, #2f1250 50%, #431765 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Декоративные элементы (планеты/иконки) */
+.planet {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+.planet-saturn {
+  top: 15%;
+  right: 12%;
+  font-size: 38px;
+  transform: rotate(-15deg);
+  opacity: 0.85;
+}
+
+.planet-small {
+  bottom: 22%;
+  left: 12%;
+  font-size: 20px;
+  opacity: 0.6;
+}
+
+/* Главный контейнер */
+.time-container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.time-title {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 30px;
+  color: #ffffff;
+  padding: 0 10px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Двойной барабан (часы и минуты) */
+.time-picker-wrapper {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  max-width: 260px;
+  overflow: hidden;
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Подсветка выбранной центральной строки */
+.time-picker-highlight {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 44px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Колонки прокрутки */
+.time-picker-column {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Двоеточие между часами и минутами */
+.time-separator {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  z-index: 3;
+  padding: 0 6px;
+  margin-top: -2px;
+}
+
+/* Списки с плавным скроллом */
+.time-picker-list {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  padding: 78px 0;
+}
+
+.time-picker-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Элементы времени (числа) */
+.time-item {
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  scroll-snap-align: center;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+/* Активное выровненное число */
+.time-item.active {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  transform: scale(1.1);
+}
+
+/* Кнопка "Готово" */
+.time-submit-btn {
+  width: 100%;
+  max-width: 260px;
+  padding: 14px;
+  border-radius: 25px;
+  border: none;
+  background: #ffd600;
+  color: #1a0933;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 214, 0, 0.35);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.time-submit-btn:active {
+  transform: scale(0.97);
+  background: #e6c200;
+}
+
+/* ================= 6. СТРАНИЦА ОТЗЫВА (page6.html) ================= */
+
+#review-screen {
+  background: linear-gradient(180deg, #1d0c36 0%, #2f1250 50%, #431765 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.review-container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.review-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 25px;
+  line-height: 1.3;
+}
+
+/* Анимация плавного появления по очереди */
+.fade-in-1, .fade-in-2, .fade-in-3, .fade-in-4 {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.fade-in-1 { animation-delay: 0.1s; }
+.fade-in-2 { animation-delay: 0.4s; }
+.fade-in-3 { animation-delay: 0.7s; }
+.fade-in-4 { animation-delay: 1.0s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Звёздочки */
+.stars-rating {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  user-select: none;
+}
+
+.star {
+  font-size: 38px;
+  color: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.star.active {
+  color: #ffd600;
+  text-shadow: 0 0 12px rgba(255, 214, 0, 0.6);
+  transform: scale(1.15);
+}
+
+.star:active {
+  transform: scale(0.9);
+}
+
+/* Текстовое поле */
+.feedback-wrapper {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+#feedback-text {
+  width: 100%;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 14px 16px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease;
+}
+
+#feedback-text::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+#feedback-text:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Кнопка отправки */
+.review-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 25px;
+  border: none;
+  background: #ffd600;
+  color: #1a0933;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 214, 0, 0.35);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.review-btn:active {
+  transform: scale(0.97);
+}
+
+.review-btn.telegram-chat-btn {
+  background: #24A1DE;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(36, 161, 222, 0.35);
+}
+
+.review-btn.telegram-chat-btn {
+  background: #24A1DE;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(36, 161, 222, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ================= ЯРКИЙ СЛАЙДЕР С ТЕМАТИЧЕСКИМИ ГРАДИЕНТАМИ ================= */
+
+.slider-container {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+}
+
+.slider-title {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.cards-slider {
+  width: 100%;
+  position: relative;
+  min-height: 440px;
+}
+
+.song-card {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  animation: slideFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.song-card.active {
+  display: flex;
+}
+
+/* Общий стиль карточки с эффектом неоновой подсветки */
+.spotify-card {
+  border-radius: 20px;
+  padding: 22px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 330px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease;
+}
+
+/* Разные градиентные темы для каждой карточки */
+.card-theme-1 {
+  background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  box-shadow: 0 15px 35px rgba(200, 80, 192, 0.35);
+}
+
+.card-theme-2 {
+  background: linear-gradient(135deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+  box-shadow: 0 15px 35px rgba(255, 60, 172, 0.35);
+}
+
+.card-theme-3 {
+  background: linear-gradient(135deg, #08AEEA 0%, #2AE88A 100%);
+  box-shadow: 0 15px 35px rgba(42, 232, 138, 0.3);
+}
+
+.card-theme-4 {
+  background: linear-gradient(135deg, #FF0844 0%, #FFB199 100%);
+  box-shadow: 0 15px 35px rgba(255, 8, 68, 0.35);
+}
+
+/* Шапка песни */
+.song-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Иконка-заглушка вместо обложки */
+.song-cover-placeholder {
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Стиль для обложек-файлов */
+.song-cover-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover; /* Изображение будет красиво заполнять квадрат без искажений */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.song-cover-placeholder svg {
+  width: 24px;
+  height: 24px;
+  fill: #ffffff;
+}
+
+.song-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-name {
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.song-artist {
+  font-size: 0.88rem;
+  opacity: 0.85;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Цитата/Текст песни */
+.song-lyrics {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 18px 0;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Логотип Spotify */
+.spotify-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  backdrop-filter: blur(5px);
+}
+
+.spotify-logo svg {
+  width: 18px;
+  height: 18px;
+  fill: #ffffff;
+}
+
+/* Текст описания под карточкой */
+.song-description {
+  color: #f0f0f0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 18px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+/* Элементы управления слайдером */
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.slider-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-btn:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.slider-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot-item {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dot-item.active {
+  background: #1DB954; /* Зеленый Spotify акцент */
+  width: 22px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
